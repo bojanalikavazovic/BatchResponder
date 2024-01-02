@@ -1,5 +1,5 @@
 <h1 align="center">
-<p style="text-align: center;"><img src="https://github.com/bojanalikavazovic/BatchResponder/assets/43232741/ecfeb5d6-3cae-43e7-8420-1468f645e89b" height=250px width=250px></p>
+<p style="text-align: center;"><img src="https://github.com/bojanalikavazovic/BatchResponder/assets/43232741/b93eb0b1-91cb-4a96-ae8c-107f7fd5092a" height=250px width=250px></p>
 </h1>
 <p align="center"><b>Super primitive way of working | Non invasive on the CPU | Great for OT environments | Works on new and old Windows environments</b><br><br>Version 1.0 (1/2024)</p>
 
