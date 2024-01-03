@@ -101,6 +101,6 @@ Example Query<br>
 - ```50414E54484552``` - The hexa-coded hostname of the infected computer.<br>
 - ```subdomain.yourdomain.com``` - If you are the owner of a domain for which you can set up an authoritative server, every DNS Query will reach your server from the infected computer wherever you are on the Internet.<br>
 
-## Roadmap 2/2023
+## Roadmap 2/2024
 - Implement user names check.
 - Implement mutex check (using Sysinternals tool).
