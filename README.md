@@ -39,15 +39,15 @@ It's great for cyber incidents, when you don't have the ability to execute Power
 
 ## Verified on various Windows versions
 Batch responder works on different versions of Windows, even older ones. This is important in OT environments.
-|                                 | exists   | netstat  | ipconfig | reg      | tasklist | schtasks | wmic     | net      |
-| ------------------------------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
-| Windows XP Pro x86 SP1          |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
-| Windows S. 2008 Ent. x86 SP1    |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
-| Windows S. 2003 R2 Ent. x86 SP2 |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
-| Windows 7 Ultimate x64          |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
-| Windows 10 Pro x86              |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
-| Windows 10 Pro x64              |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
-| Windows 11 Pro x64              |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
+|                                 | exists   | netstat  | ipconfig | reg      | tasklist | schtasks | wmic     | net      | qwinsta  |
+| ------------------------------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
+| Windows XP Pro x86 SP1          |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
+| Windows S. 2008 Ent. x86 SP1    |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
+| Windows S. 2003 R2 Ent. x86 SP2 |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
+| Windows 7 Ultimate x64          |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
+| Windows 10 Pro x86              |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
+| Windows 10 Pro x64              |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
+| Windows 11 Pro x64              |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |    +     |
       
 ## How does the script work?
 Distribute the script to the suspect computers and execute it. Listen to infected computers that will send you a specific PING, DNS Query, and detection reports to your FTP server (optional).    
@@ -104,7 +104,7 @@ Example Query<br>
 ```8680.50433133322E462E4E2E442E522E502E45.subdomain.yourdomain.com```
 <br><br>
 - ```8680``` - The random number is there to bypass the DNS cache on the DNS server or Proxy devices, so that every single DNS Query goes outside the company to the Internet - even if you run the script several times on the same computer in a short time. A simple and stupid trick. :)<br>
-- ```50433133322E462E4E2E442E522E502E45``` - The hexa-coded hostname of the infected computer. After conversion from hexa to ASCII, the value is **PC132.F.N.D.R.P.E**. PC132 = infected computer, F(ile), N(etwork connection), D(DNS cache), R(egistry value), P(rocess), RDP S(E)ssion.<br>
+- ```50433133322E462E4E2E442E522E502E45``` - The hexa-coded value of the infected computer. After conversion from hexa to ASCII, the ASCII value is **PC132.F.N.D.R.P.E**. **PC132** = infected computer, **F**(ile), **N**(etwork connection), **D**(DNS cache), **R**(egistry value), **P**(rocess), RDP (S)**E**(ssion).<br>
 - ```subdomain.yourdomain.com``` - If you are the owner of a domain for which you can set up an authoritative server, every DNS Query will reach your server from the infected computer wherever you are on the Internet.<br>
 
 ## Roadmap 6/2024
