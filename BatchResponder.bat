@@ -3,7 +3,7 @@
 ::  |__)  /\   |  /  ` |__| |__) |__  /__` |__) /  \ |\ | |  \ |__  |__) 
 ::  |__) /~~\  |  \__, |  | |  \ |___ .__/ |    \__/ | \| |__/ |___ |  \ 
 ::  --------------------------------------------------------------------
-::         Author: Bojan Alikavazovic  |  Version 1.0 (1/2024)
+::         Author: Bojan Alikavazovic  |  Version 1.1 (5/2024)
 ::  --------------------------------------------------------------------
 
 setlocal EnableDelayedExpansion
@@ -12,6 +12,7 @@ set IOCCounter=0
 set /a number=%random%
 set info=%COMPUTERNAME%
 set log_path=%USERNAME%
+set Detections=
 
 :: STEP 1 - Configure parameters.
 :: -----------------------------------------------------------------
@@ -33,13 +34,15 @@ echo.
 :: If you are looking for multiple IOCs, separate them with a space in quotation marks - it is the same as the OR operator.
 :: Names are case sensitive.
 :: -----------------------------------------------------------------
-set "IOC_FILE_NM=%HOMEPATH%\Desktop\virus.exe %SYSTEMROOT%\System32\suspicious.dll" 
-set IOC_NETWORK=":4444 123.123.123.123"
-set IOC_DNS_REC="micros0ft.com yotube.com"
-set IOC_PROCESS="scvhost.exe chr0me.exe"
+set "IOC_FILE_NM=%APPDATA%\MyOtApp\MyOtApp.exe" 
+set IOC_NETWORK=":587"
+set IOC_DNS_REC="smtp.agenterstla360.com"
+set IOC_PROCESS="PO1100AJ110011P.exe"
 set IOC_SC_TASK="StartScriptMalware"
 set IOC_INS_APP="SuperMalware"
 set IOC_SERVICE="SuperMalware"
+set IOC_RDP_SES="user"
+set IOC_USER_AC="JohnDoe"
 :: For Windows Registry IOC definition look at the code block :REGISTRY in this script.
 
 :: STEP 3 - Choose which IOCs you will search. 
@@ -53,6 +56,8 @@ call :PROCESS
 call :SCHEDULED_TASK
 call :INSTALLED_APPLICATION
 call :SERVICE
+call :RDP
+call :USERNAMES
 
 :: STEP 4 - Distribute and run the script on suspicious end hosts!
 :: Comment the FTP call if you want to avoid uploading the results to FTP.
@@ -68,6 +73,7 @@ for %%F in (%IOC_FILE_NM%) do (
 	if exist "%%F" (
 		set /a IOCCounter+=1
 		echo  ^^!  Found: File %%~nxF >> %ResultsFile%
+		set Detections=%Detections%.F
 	)
 )
 goto END
@@ -79,6 +85,7 @@ netstat -o -n -a | findstr %IOC_NETWORK% > nul
 if %ERRORLEVEL% equ 0 (
 	echo  ^^!  Found: Network indicator >> %ResultsFile%
 	set /a IOCCounter+=1
+	set Detections=%Detections%.N
 )
 goto END
 
@@ -89,6 +96,7 @@ ipconfig /displaydns | findstr %IOC_DNS_REC% > nul
 if %ERRORLEVEL% equ 0 (
 	echo  ^^!  Found: DNS indicator >> %ResultsFile%
 	set /a IOCCounter+=1
+	set Detection=%Detections%.D
 )
 goto END
 
@@ -98,11 +106,12 @@ echo  ^>  Checking: Windows registry
 :: Windows Registry IOC list
 :: If you are looking for multiple Windows Registry records,
 :: put each individual query in a new line starting with "reg query...". Records are case sensitive.
-reg query HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion /v ProgramFilesDir | findstr Program > nul
+reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v MyOtApp | findstr MyOtApp > nul
 
 if %ERRORLEVEL% equ 0 (
 	echo  ^^!  Found: Registry indicator >> %ResultsFile%
 	set /a IOCCounter+=1
+	set Detections=%Detections%.R
 )
 goto END
 
@@ -113,6 +122,7 @@ tasklist | findstr %IOC_PROCESS% > nul
 if %ERRORLEVEL% equ 0 (
 	echo  ^^!  Found: Process indicator >> %ResultsFile%
 	set /a IOCCounter+=1
+	set Detections=%Detections%.P
 )
 goto END
 
@@ -123,6 +133,7 @@ schtasks /query /fo table | findstr %IOC_SC_TASK% > nul
 if %ERRORLEVEL% equ 0 (
 	echo  ^^!  Found: Scheduled task >> %ResultsFile%
 	set /a IOCCounter+=1
+	set Detections=%Detections%.T
 )
 goto END
 
@@ -133,6 +144,7 @@ wmic product get name,version | findstr %IOC_INS_APP% > nul
 if %ERRORLEVEL% equ 0 (
 	echo  ^^!  Found: Installed application >> %ResultsFile%
 	set /a IOCCounter+=1
+	set Detections=%Detections%.A
 )
 goto END
 
@@ -143,6 +155,29 @@ net start | findstr %IOC_SERVICE% > nul
 if %ERRORLEVEL% equ 0 (
 	echo  ^^!  Found: Service >> %ResultsFile%
 	set /a IOCCounter+=1
+	set Detections=%Detections%.S
+)
+goto END
+
+:RDP
+echo  ^>  Checking: RDP Sessions
+qwinsta | findstr ">rdp" | findstr %IOC_RDP_SES% > nul
+
+if %ERRORLEVEL% equ 0 (
+	echo  ^^!  Found: Active RDP session >> %ResultsFile%
+	set /a IOCCounter+=1
+	set Detections=%Detections%.E
+)
+goto END
+
+:USERNAMES
+echo  ^>  Checking: Configured user accounts
+net user | findstr %IOC_USER_AC% > NUL
+
+if %ERRORLEVEL% equ 0 (
+	echo  ^^!  Found: Configured user account >> %ResultsFile%
+	set /a IOCCounter+=1
+	set Detections=%Detections%.U
 )
 goto END
 
@@ -160,7 +195,7 @@ IF !IOCCounter! gtr 0 (
 )
 
 :FOUND_IOC
-set /P "=%info%" < NUL > %temp%\ascii.tmp
+set /P "=%info%%Detections%" < NUL > %temp%\ascii.tmp
 
 for %%a in (%temp%\ascii.tmp) do fsutil file createnew %temp%\leak.tmp %%~Za > nul
 
