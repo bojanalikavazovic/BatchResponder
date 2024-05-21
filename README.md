@@ -83,6 +83,7 @@ set IOC_RDP_SES="user"
 set IOC_USER_AC="JohnDoe"
 :: For Windows Registry IOC definition look at the code block :REGISTRY in this script.
 ```
+You can find a test AgentTesla sample with the exact IOCs on MalShare or AnyRun public services. Hash: 84D2BF2A7B91625A6500DD9F49986756C506C128.
 
 ### Step 3 - Distribute and run BatchResponder
 Distribute and execute the script via Group Policy in a Windows environment. Or, simply copy the prepared script to the suspicious computers and activate it with a double click.<br><br>
