@@ -104,7 +104,7 @@ Example Query<br>
 ```8680.50433133322E462E4E2E442E522E502E45.subdomain.yourdomain.com```
 <br><br>
 - ```8680``` - The random number is there to bypass the DNS cache on the DNS server or Proxy devices, so that every single DNS Query goes outside the company to the Internet - even if you run the script several times on the same computer in a short time. A simple and stupid trick. :)<br>
-- ```50433133322E462E4E2E442E522E502E45``` - The hexa-coded value of the infected computer. After conversion from hexa to ASCII, the ASCII value is **PC132.F.N.D.R.P.E**. **PC132** = infected computer, **F**(ile), **N**(etwork connection), **D**(DNS cache), **R**(egistry value), **P**(rocess), RDP (S)**E**(ssion).<br>
+- ```50433133322E462E4E2E442E522E502E45``` - The hexa-coded value of the infected computer. After conversion from hexa to ASCII, the ASCII value is PC132.F.N.D.R.P.E; **PC132** = infected computer, **F**(ile), **N**(etwork connection), **D**(DNS cache), **R**(egistry value), **P**(rocess), RDP (S)**E**(ssion). This is the way you can find out which indicators were found on the infected computer.<br>
 - ```subdomain.yourdomain.com``` - If you are the owner of a domain for which you can set up an authoritative server, every DNS Query will reach your server from the infected computer wherever you are on the Internet.<br>
 
 ## Roadmap 6/2024
