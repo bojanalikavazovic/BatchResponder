@@ -96,7 +96,7 @@ ipconfig /displaydns | findstr %IOC_DNS_REC% > nul
 if %ERRORLEVEL% equ 0 (
 	echo  ^^!  Found: DNS indicator >> %ResultsFile%
 	set /a IOCCounter+=1
-	set Detection=%Detections%.D
+	set Detections=%Detections%.D
 )
 goto END
 
